@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "licenses")
@@ -18,7 +19,7 @@ import java.util.Date;
 public class LicenseHistory {
     @Id
     @GeneratedValue
-    private long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "license_id", nullable = false)

@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "products")
 @Getter
@@ -18,7 +20,7 @@ import lombok.Setter;
 public class Product {
     @Id
     @GeneratedValue
-    private long id;
+    private UUID id;
 
     private String name;
     private boolean isBlocked;

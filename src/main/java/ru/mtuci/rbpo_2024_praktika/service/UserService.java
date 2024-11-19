@@ -16,6 +16,7 @@ import ru.mtuci.rbpo_2024_praktika.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +44,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+    public Optional<ApplicationUser> findById(UUID Id){
+        return userRepository.findById(Id);
+    }
+
     public ApplicationUser createNewUser(RegistrationUserDto registrationUserDto){
         ApplicationUser user = new ApplicationUser();
         user.setUsername(registrationUserDto.getUsername());
@@ -51,4 +56,5 @@ public class UserService implements UserDetailsService {
         user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
         return userRepository.save(user);
     }
+
 }
