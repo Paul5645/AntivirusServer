@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "device_licenses")
@@ -14,7 +15,7 @@ import java.util.Date;
 public class DeviceLicense {
     @Id
     @GeneratedValue
-    private long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "license_id", nullable = false)
