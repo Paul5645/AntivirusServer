@@ -1,12 +1,10 @@
 package ru.mtuci.rbpo_2024_praktika.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.mtuci.rbpo_2024_praktika.dto.JwtRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import ru.mtuci.rbpo_2024_praktika.dto.JwtRequestDto;
+import ru.mtuci.rbpo_2024_praktika.dto.JwtResponseDto;
 import ru.mtuci.rbpo_2024_praktika.dto.RegistrationUserDto;
 import ru.mtuci.rbpo_2024_praktika.service.AuthService;
 
@@ -17,12 +15,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest request){
+    public JwtResponseDto createAuthToken(@RequestBody JwtRequestDto request) {
         return authService.createAuthToken(request);
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> createUser(@RequestBody RegistrationUserDto registrationUserDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public JwtResponseDto createUser(@RequestBody RegistrationUserDto registrationUserDto) {
         return authService.createUser(registrationUserDto);
     }
 }

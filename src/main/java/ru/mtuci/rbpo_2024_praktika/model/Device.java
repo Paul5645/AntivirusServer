@@ -20,9 +20,12 @@ public class Device {
     private UUID id;
 
     private String name;
-    private String mac_address;
+
+    @Column(name = "mac_address")
+    private String macAddress;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private ApplicationUser user_id;
+    private ApplicationUser user;
 }
+

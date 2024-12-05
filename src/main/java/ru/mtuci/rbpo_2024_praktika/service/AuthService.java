@@ -1,19 +1,16 @@
 package ru.mtuci.rbpo_2024_praktika.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import ru.mtuci.rbpo_2024_praktika.dto.JwtRequest;
-import ru.mtuci.rbpo_2024_praktika.dto.JwtResponse;
+import ru.mtuci.rbpo_2024_praktika.dto.JwtRequestDto;
+import ru.mtuci.rbpo_2024_praktika.dto.JwtResponseDto;
 import ru.mtuci.rbpo_2024_praktika.dto.RegistrationUserDto;
-import ru.mtuci.rbpo_2024_praktika.exceptions.AppError;
+import ru.mtuci.rbpo_2024_praktika.exceptions.InvalidCredentialsException;
+import ru.mtuci.rbpo_2024_praktika.exceptions.PasswordMismatchException;
+import ru.mtuci.rbpo_2024_praktika.exceptions.UserAlreadyExistsException;
 import ru.mtuci.rbpo_2024_praktika.model.ApplicationUser;
 import ru.mtuci.rbpo_2024_praktika.utils.JwtUtils;
 
@@ -25,29 +22,28 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest request){
+    public JwtResponseDto createAuthToken(JwtRequestDto request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        }catch (BadCredentialsException e){
-            return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Wrong login or password"),HttpStatus.UNAUTHORIZED);
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+        } catch (Exception e) {
+            throw new InvalidCredentialsException("Invalid username or password");
         }
-        UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
+        UserDetails userDetails = userService.loadUserByUsername(request.username());
         String token = jwtUtils.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return new JwtResponseDto(token);
     }
 
-
-    public ResponseEntity<?> createUser(@RequestBody RegistrationUserDto registrationUserDto){
-        if(!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())){
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"Passwords do not match"),HttpStatus.BAD_REQUEST);
+    public JwtResponseDto createUser(RegistrationUserDto registrationUserDto) {
+        if (!registrationUserDto.password().equals(registrationUserDto.confirmPassword())) {
+            throw new PasswordMismatchException("Passwords do not match");
         }
-        if(userService.findByUsername(registrationUserDto.getUsername()).isPresent()){
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"A user with the specified name already exists"),HttpStatus.BAD_REQUEST);
+        if (userService.findByUsername(registrationUserDto.username()).isPresent()) {
+            throw new UserAlreadyExistsException("A user with the specified name already exists");
         }
         ApplicationUser user = userService.createNewUser(registrationUserDto);
         UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
         String token = jwtUtils.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+        return new JwtResponseDto(token);
     }
 }

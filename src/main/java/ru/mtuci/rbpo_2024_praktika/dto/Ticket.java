@@ -1,20 +1,9 @@
 package ru.mtuci.rbpo_2024_praktika.dto;
 
-import lombok.Data;
-
 import java.time.Duration;
 import java.util.Date;
+import java.util.UUID;
 
-@Data
-public class Ticket {
-    private Date date;
-    private Duration lifetime;
-    private Date activation_date;
-    private Date expiration_date;
-    private long user_id;
-    private long device_id;
-    private boolean isLicenseBlocked;
-    private String sugnature;
-
-
+public record Ticket(Date date, Duration lifetime, Date activation_date, Date expiration_date, UUID user_id,
+                     UUID device_id, boolean isLicenseBlocked, String signature) {
 }

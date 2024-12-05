@@ -10,8 +10,6 @@ import ru.mtuci.rbpo_2024_praktika.model.ApplicationUser;
 import ru.mtuci.rbpo_2024_praktika.repository.RoleRepository;
 import ru.mtuci.rbpo_2024_praktika.repository.UserRepository;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @SpringBootApplication
@@ -34,12 +32,12 @@ public class AntivirusServerApplication {
 			admin.setUsername("admin");
 			admin.setPassword(passwordEncoder.encode("123456"));
 			admin.setEmail("admin@gmail.com");
-			admin.setRoles(Arrays.asList(adminRole));
+			admin.setRoles(List.of(adminRole));
 			ApplicationUser user1 = new ApplicationUser();
 			user1.setUsername("user1");
 			user1.setPassword(passwordEncoder.encode("1234"));
 			user1.setEmail("user1@gmail.com");
-			user1.setRoles(Arrays.asList(userRole));
+			user1.setRoles(List.of(userRole));
 			userRepo.save(user1);
 			userRepo.save(admin);
 		};

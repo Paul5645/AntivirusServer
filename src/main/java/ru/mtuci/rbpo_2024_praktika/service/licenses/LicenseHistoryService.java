@@ -14,19 +14,13 @@ import java.util.Date;
 public class LicenseHistoryService {
     private final LicenseHistoryRepository licenseHistoryRepository;
 
-    public boolean recordLicenseChange(License license, ApplicationUser owner, String status, String description) {
-        try {
-            LicenseHistory licenseHistory = new LicenseHistory();
-            licenseHistory.setLicense_id(license);
-            licenseHistory.setChange_date(new Date());
-            licenseHistory.setUser_id(owner);
-            licenseHistory.setStatus(status);
-            licenseHistory.setDescription(description);
-            licenseHistoryRepository.save(licenseHistory);
-
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    public void recordLicenseChange(License license, ApplicationUser owner, String status, String description) {
+        LicenseHistory licenseHistory = new LicenseHistory();
+        licenseHistory.setLicense_id(license);
+        licenseHistory.setChange_date(new Date());
+        licenseHistory.setUser_id(owner);
+        licenseHistory.setStatus(status);
+        licenseHistory.setDescription(description);
+        licenseHistoryRepository.save(licenseHistory);
     }
 }
