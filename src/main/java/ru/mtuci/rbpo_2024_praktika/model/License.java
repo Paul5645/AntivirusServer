@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "licenses")
@@ -18,7 +20,7 @@ public class License {
 
     @Id
     @GeneratedValue
-    private long id;
+    private UUID id;
 
     private String code;
 
@@ -43,7 +45,7 @@ public class License {
     @JoinColumn(name = "owner_id", nullable = false)
     private ApplicationUser owner_id;
 
-    private int duration;
+    private Duration duration;
     private String description;
 
 

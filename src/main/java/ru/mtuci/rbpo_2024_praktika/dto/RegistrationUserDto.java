@@ -1,13 +1,4 @@
 package ru.mtuci.rbpo_2024_praktika.dto;
 
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import lombok.Data;
-
-@Data
-public class RegistrationUserDto {
-    private String username;
-    private String password;
-    private String confirmPassword;
-    private String email;
+public record RegistrationUserDto(String username, String password, String confirmPassword, String email) {
 }

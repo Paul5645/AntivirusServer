@@ -16,6 +16,7 @@ import ru.mtuci.rbpo_2024_praktika.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,12 +44,17 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+    public ApplicationUser findById(UUID Id){
+        return userRepository.findById(Id).orElseThrow(()->new UsernameNotFoundException("User with ID" + Id + "not found."));
+    }
+
     public ApplicationUser createNewUser(RegistrationUserDto registrationUserDto){
         ApplicationUser user = new ApplicationUser();
-        user.setUsername(registrationUserDto.getUsername());
-        user.setEmail(registrationUserDto.getEmail());
-        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
+        user.setUsername(registrationUserDto.username());
+        user.setEmail(registrationUserDto.email());
+        user.setPassword(passwordEncoder.encode(registrationUserDto.password()));
         user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
         return userRepository.save(user);
     }
+
 }

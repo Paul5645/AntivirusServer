@@ -33,4 +33,7 @@ public class ApplicationUser {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<ApplicationRole> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Device> devices;
 }

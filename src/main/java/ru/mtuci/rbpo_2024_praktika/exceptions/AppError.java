@@ -2,7 +2,6 @@ package ru.mtuci.rbpo_2024_praktika.exceptions;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;

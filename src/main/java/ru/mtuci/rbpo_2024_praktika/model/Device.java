@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "devices")
 @Getter
@@ -15,12 +17,15 @@ import lombok.Setter;
 public class Device {
     @Id
     @GeneratedValue
-    private long id;
+    private UUID id;
 
     private String name;
-    private String mac_address;
+
+    @Column(name = "mac_address")
+    private String macAddress;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private ApplicationUser user_id;
+    private ApplicationUser user;
 }
+
